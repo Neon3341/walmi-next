@@ -30,7 +30,7 @@ export default function Button({ children, variant, id, className, link, ico = f
     if (link) {
         return (
             <Link href={link} className="hover:underline ">
-                <SimpleBtn ico={ico ? ico : false} id={id} className={classes}>{children}</SimpleBtn>
+                <SimpleBtn ico={ico ? ico : false} id={id} className={classes} onClick={onClick ? onClick : F}>{children}</SimpleBtn>
             </Link>
         );
     } else {

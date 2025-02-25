@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@components/*": [
+        "./app/components/*"
+      ],
+      "@media/*": [
+        "./media/images/*",
+        "./media/video/*",
+        "./media/icons/*"
+      ],
+      "@storage/*": [
+        "./app/storage/*"
+      ],
+    }
+  }
+}

@@ -10,20 +10,17 @@ export default function Button({ children, variant, id, className, link, ico = f
     }
 
     switch (variant) {
-        case "light":
-            classes = className + " bg-gray";
-            break;
         case "sky":
             classes = className + " bg-sky";
             break;
         case "outline":
-            classes = className + " border-[.06rem] rounded-[.625rem] py-1 px-[.8rem] border-gray";
+            classes = className + "bg-gray/10 border-[.06rem] rounded-[.625rem] py-1 px-[.8rem] border-black/30";
             break;
         case "clear":
             classes = className + " border border-netural-200 pl-4 pr-4 py-2 rounded-2xl bg-transparent text-netural-400 hover:brightness-95";
             break;
         default:
-            classes = className;
+            classes = className + " bg-gray";
             break;
     }
 

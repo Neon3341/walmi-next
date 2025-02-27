@@ -8,7 +8,7 @@ export default function SimpleBtn({ ico = false, id, className, children, onClic
     }
 
     return (
-        <div id={id} className={`${className} backdrop-blur gap-x-2 py-2 px-8 rounded-xl bg-gray cursor-pointer transition-all hover:brightness-110 flex flex-row items-center text-nowrap`} onClick={onClick}>
+        <div id={id} className={`${className} select-none backdrop-blur gap-x-2 py-2 px-8 rounded-xl cursor-pointer transition-all hover:brightness-110 flex flex-row items-center text-nowrap`} onClick={onClick}>
             {icon}<span>{children}</span>
         </div>
     )

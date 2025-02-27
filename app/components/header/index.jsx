@@ -1,17 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import Button from "@components/button/variantButton";
 
 import WalmiText from '@media/walmiText.png'
 import WalmiFavi from '@media/favi.png'
-import ListIco from '@media/list.svg'
 import BasketIco from '@media/basket3.svg'
 import AtIco from '@media/at.svg'
 import TelIco from '@media/telephone.svg'
 
 
 import SearchBar from "./searchBar";
+import CatalogDDM from "./catalogDDM";
+import CatalogBtn from "./catalogBtn";
 
 export default function Header({ }) {
 
@@ -24,7 +24,7 @@ export default function Header({ }) {
                             <Image src={WalmiFavi} alt="Logo" width={40} className="w-10 hidden lg:block" />
                             <Image src={WalmiText} alt="Logo" width={160} className="min-w-40" />
                         </Link>
-                        <Button ico={ListIco} variant={"light"} className={"w-fit ml-4 font-semibold"}>Каталог</Button>
+                        <CatalogBtn />
                     </div>
                     <div className="h-full w-full hidden md:block">
                         <SearchBar />
@@ -45,6 +45,7 @@ export default function Header({ }) {
                     </div>
                 </div>
             </div>
+            <CatalogDDM />
             <div className="max-w-box-xl w-full h-fit justify-between py-2 mt-16 gap-x-4 z-0 hidden sm:flex">
                 <div className="flex gap-x-2">
                     <span className="hover:text-latte cursor-pointer font-semibold px-2 py-1 transition-all">Москва</span> {/* Сделать выбор региона */}

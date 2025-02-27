@@ -12,6 +12,9 @@
       "@storage/*": [
         "./app/storage/*"
       ],
+      "@bin/*": [
+        "./app/bin/*"
+      ],
     }
   }
 }

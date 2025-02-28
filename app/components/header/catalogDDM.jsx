@@ -33,7 +33,7 @@ function CatalogDDMInner() {
     }
 
     return (
-        <div className={`min-h-[650px] bg-white rounded-ee-2xl border border-sky rounded-es-2xl z-20 w-box-xl fixed top-16 py-5 px-7 gap-x-4 ${catalogDDMState ? "flex" : "hidden"}`}>
+        <div className={`min-h-[650px] bg-white rounded-ee-2xl border border-sky rounded-es-2xl z-50 w-box-xl fixed top-16 py-5 px-7 gap-x-4 ${catalogDDMState ? "flex" : "hidden"}`}>
             <div className=" min-w-64 py-2">
                 {categories.map((child, index) => {
                     return (

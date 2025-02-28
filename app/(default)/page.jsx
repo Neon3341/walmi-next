@@ -1,3 +1,4 @@
+import ProductGrid from "@components/layouts/productGrid";
 import HomeSlider from "@components/sliders/homeSlider";
 
 
@@ -6,7 +7,7 @@ export default function Home() {
     <main>
       <div className="grid grid-cols-2">
         <HomeSlider />
-        <div></div>
+        <ProductGrid />
       </div>
 
       Главная страница

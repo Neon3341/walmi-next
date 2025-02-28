@@ -1,82 +1,106 @@
 import Image from "next/image";
-import { useEffect, useState, useRef } from "react";
+import { useRef, useState } from "react";
 
-export default function ProductCard({ variant = "", data }) {
-    const [card, setCard] = useState(<></>);
-
-    useEffect(() => {
-        switch (variant) {
-            case "micro":
-                setCard(<MicroCard data={data} />)
-                break;
-
-            default:
-                break;
-        }
-    }, [variant, data]);
-
-    return (
-        <div className="w-full">
-            {card}
-        </div>
-    )
-}
-
-function MicroCard({ data }) {
-    const [currentIndex, setCurrentIndex] = useState(-1);
-    const containerRef = useRef(null);
-
-    const handleMouseMove = (e) => {
-        const container = containerRef.current;
-        if (!container) return;
-
-        const gallery = data.media.gallery || [];
-        const galleryLength = gallery.length;
-        if (galleryLength === 0) return;
-
-        const rect = container.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const width = rect.width;
-
-        let index = Math.floor((x / width) * galleryLength);
-        index = Math.min(index, galleryLength - 1);
-        setCurrentIndex(index);
-    };
-
-    const handleMouseLeave = () => {
-        setCurrentIndex(-1);
-    };
-
-    const imageSrc = currentIndex >= 0 
-        ? data.media.gallery[currentIndex] 
-        : data.media.thumbnail;
-
-    return (
-        <div className="w-full">
-            <div 
-                ref={containerRef}
-                className="bg-white relative w-full rounded-xl" 
-                style={{ paddingTop: '100%' }}
-                onMouseMove={handleMouseMove}
-                onMouseLeave={handleMouseLeave}
-            >
-                <Image
-                    alt="Product Image"
-                    layout="fill"
-                    objectFit="contain"
-                    objectPosition="center"
-                    unoptimized
-                    className="absolute top-0 left-0 rounded-xl"
-                    src={imageSrc}
-                />
-                <div className="absolute w-full h-full top-0 right-0"></div>
-            </div>
-            <span className="font-bold text-xl">{priceSpaces(data.price)}</span>
-            <span className="font-bold text-sm"> ₽</span>
-        </div>
-    );
-}
-
-const priceSpaces = (price) => {
-    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+const variantsConfig = {
+  micro: {
+    containerClasses: "bg-white",
+    showTitle: false,
+  },
+  small: {
+    containerClasses: "bg-neutral-100/70",
+    showTitle: true,
+  },
 };
+
+export default function ProductCard({ variant = "micro", data }) {
+  const config = variantsConfig[variant] || variantsConfig.micro;
+
+  return (
+    <div className="w-full cursor-pointer">
+      <Card data={data} config={config} />
+    </div>
+  );
+}
+
+function Card({ data, config }) {
+  const [currentIndex, setCurrentIndex] = useState(-1);
+  const containerRef = useRef(null);
+  const { gallery = [] } = data.media;
+  
+  const { handleMouseMove, handleMouseLeave } = useImageHover({
+    containerRef,
+    gallery,
+    setCurrentIndex,
+  });
+
+  const imageSrc = currentIndex >= 0 ? gallery[currentIndex] : data.media.thumbnail;
+
+  return (
+    <div className="w-full">
+      <div
+        ref={containerRef}
+        className={`relative w-full rounded-xl ${config.containerClasses}`}
+        style={{ paddingTop: '100%' }}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+      >
+        <ProductImage src={imageSrc} />
+      </div>
+      
+      <ProductInfo data={data} config={config} />
+    </div>
+  );
+}
+
+function ProductImage({ src }) {
+  return (
+    <Image
+      alt="Product Image"
+      layout="fill"
+      objectFit="contain"
+      objectPosition="center"
+      unoptimized
+      className="absolute top-0 left-0 rounded-xl"
+      src={src}
+    />
+  );
+}
+
+function ProductInfo({ data, config }) {
+  return (
+    <>
+      {config.showTitle && (
+        <p className="font-semibold text-lg leading-5 line-clamp-2">{data.title}</p>
+      )}
+      <Price price={data.price} />
+    </>
+  );
+}
+
+function Price({ price }) {
+  return (
+    <span className="font-bold text-xl">
+      {priceSpaces(price)}
+      <span className="text-sm"> ₽</span>
+    </span>
+  );
+}
+
+const useImageHover = ({ containerRef, gallery, setCurrentIndex }) => {
+  const handleMouseMove = (e) => {
+    if (!containerRef.current || gallery.length === 0) return;
+    
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const index = Math.floor((x / rect.width) * gallery.length);
+    
+    setCurrentIndex(Math.min(index, gallery.length - 1));
+  };
+
+  const handleMouseLeave = () => setCurrentIndex(-1);
+
+  return { handleMouseMove, handleMouseLeave };
+};
+
+const priceSpaces = (price) => 
+  price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');

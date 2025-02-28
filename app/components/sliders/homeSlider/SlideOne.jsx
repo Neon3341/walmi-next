@@ -12,14 +12,14 @@ export default function HSSlideOne({ }) {
     }, []);
 
     return (
-        <div className="w-full bg-indigo-200 rounded-xl h-[400px] flex flex-col py-5 px-8 relative">
+        <div className="w-full bg-indigo-200 rounded-xl h-full flex flex-col py-5 px-8 relative">
             <div className="w-fit absolute top-3 right-3">
                 <Button className={`w-fit`} variant={"outline"}>Все товары</Button>
             </div>
             <span className={raleway}>Рекомендуем вам</span>
-            <h3 className={`text-[70px] font-bold ${raleway.className}`} >{related.title}</h3>
+            <h3 className={`text-[70px] font-bold -mt-3 ${raleway.className}`} >{related.title}</h3>
 
-            <div className="grid grid-cols-3 gap-x-3 w-full place-items-center">
+            <div className="grid grid-cols-3 gap-x-3 gap-y-2 w-full place-items-center">
                 {
                     related?.products.map((child, index) => {
                         return (<ProductCard key={index} variant="micro" data={child} />)
@@ -32,7 +32,7 @@ export default function HSSlideOne({ }) {
 }
 
 const fetchRelated = async () => {
-    return {
+    const array = {
         title: "Стеллажи",
         category: 201,
         products: [
@@ -73,4 +73,6 @@ const fetchRelated = async () => {
             },
         ]
     }
+    array.products = [...array.products, ...array.products];
+    return array
 }

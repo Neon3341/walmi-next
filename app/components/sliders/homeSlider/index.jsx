@@ -8,7 +8,7 @@ export default function HomeSlider() {
     const [slide, setSlide] = useState(0);
     const [isTransitioning, setIsTransitioning] = useState(false);
     const duration = 5000;
-    const autoplay = true;
+    const autoplay = false;
 
     const slides = [
         <HSSlideOne />,
@@ -57,8 +57,8 @@ export default function HomeSlider() {
     }
 
     return (
-        <div>
-            <div className="flex flex-col">
+        <div className="relative">
+            <div className="flex flex-col absolute -left-[250px]">
                 <p>
                     <span className="font-bold">METADATA:</span>
                     <br />
@@ -72,12 +72,11 @@ export default function HomeSlider() {
                 </div>
             </div>
 
-            <br />
-            <div className="relative rounded-xl h-[400px] bg-neutral-200">
+            <div className="relative rounded-xl h-full bg-neutral-200">
                 {slides.map((slideComponent, index) => (
                     <div
                         key={index}
-                        className={`absolute top-0 left-0 w-full transition-opacity duration-300 ${
+                        className={`absolute top-0 left-0 w-full h-full transition-opacity duration-300 ${
                             index === slide ? 'opacity-100 z-20' : 'opacity-0 z-0'
                         }`}
                     >

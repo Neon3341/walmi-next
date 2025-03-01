@@ -13,7 +13,7 @@ export default function ProductGrid({ quantity = 6, page = 0, variant = "small"}
     return (
         <div className="grid grid-cols-3 gap-x-3 gap-y-10 py-5 px-8">
             {products?.map((child, index) => {
-                return <ProductCard variant={variant} data={child}/>
+                return <ProductCard key={index} variant={variant} data={child}/>
             })}
         </div>
     )

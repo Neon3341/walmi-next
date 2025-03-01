@@ -19,7 +19,6 @@ function Inner() {
 
     const onclick = () => {
         dispatch(setCatalogDDMState(!catalogDDMState));
-        console.log(catalogDDMState);
     };
 
     return (

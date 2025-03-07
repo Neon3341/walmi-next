@@ -2,6 +2,7 @@ import RightBar from "@components/product/single/rightBar";
 import AboutProduct from "@components/product/single/aboutProduct";
 import BreadCrumbs from "@components/product/single/breadCrumbs";
 import Gallery from "@components/product/single/gallery";
+import WalmiApi from "@bin/walmiApi";
 
 
 export default async function ProductPage({ params }) {
@@ -45,6 +46,10 @@ export default async function ProductPage({ params }) {
 
 const getProduct = async (productId) => {
 
+    const api = new WalmiApi;
+    const response = await api.get(`/products/${productId}/`);
+    console.log(response);
+    return response.data;
     return {
         title: "Hoff Loft - Письменный стол",
         price: 18000,

@@ -1,17 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 
-
 import WalmiText from '@media/walmiText.png'
 import WalmiFavi from '@media/favi.png'
-import BasketIco from '@media/basket3.svg'
-import AtIco from '@media/at.svg'
-import TelIco from '@media/telephone.svg'
-
 
 import SearchBar from "./searchBar";
 import CatalogDDM from "./catalogDDM";
 import CatalogBtn from "./catalogBtn";
+import IconButtons from "./iconButtons";
 
 export default function Header({ }) {
 
@@ -29,20 +25,7 @@ export default function Header({ }) {
                     <div className="h-full w-full hidden md:block">
                         <SearchBar />
                     </div>
-                    <div className="flex gap-x-2 items-center leading-3 justify-between w-fit text-black/80 ">
-                        <Link href={"/cart"} className="flex items-center flex-col hover:text-latte transition-all self-center">
-                            <Image alt="cart" src={BasketIco} height={25} width={25} className="min-w-6"/>
-                            <span className="text-xs text-foreground/5 leading-3 mt-2 hidden lg:block">Корзина</span>
-                        </Link>
-                        <a className="flex items-center flex-col hover:text-latte transition-all self-center" href="tel:74951234567">
-                            <Image alt="call" src={TelIco} height={25} width={25} className="min-w-6"/>
-                            <span className="text-xs text-foreground/5 leading-3 mt-2 hidden lg:block">Позвонить</span>
-                        </a>
-                        <a className="flex items-center flex-col hover:text-latte transition-all self-center" href="mailto:sales@walmi.ru">
-                            <Image alt="email" src={AtIco} height={25} width={25} className="min-w-6"/>
-                            <span className="text-xs text-foreground/5 leading-3 mt-2 hidden lg:block">Написать</span>
-                        </a>
-                    </div>
+                    <IconButtons />
                 </div>
             </div>
             <CatalogDDM />

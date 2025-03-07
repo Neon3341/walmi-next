@@ -18,10 +18,10 @@ export default function ProductCard({ variant = "micro", data }) {
 
     return (
         <div className="w-full cursor-pointer">
-            <Link href={`/catalog/product/${data.id}`}>
-            <Card data={data} config={config} />
+            <Link href={`/catalog/product/${data._id}`}>
+                <Card data={data} config={config} />
             </Link>
-            
+
         </div>
     );
 }

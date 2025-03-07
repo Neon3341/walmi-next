@@ -1,3 +1,4 @@
+import WalmiApi from "@bin/walmiApi";
 import Button from "@components/button/variantButton";
 import ProductCard from "@components/product/cards";
 import { Caveat } from "@next/font/google";
@@ -6,22 +7,27 @@ const raleway = Caveat();
 
 export default function HSSlideOne({ }) {
 
-    const [related, setRelated] = useState({ products: [] });
+    const [related, setRelated] = useState([]);
     useEffect(() => {
-        fetchRelated().then(setRelated);
+        fetchRelated().then((data) => setRelated(data.data));
     }, []);
+
+    useEffect(() => {
+        console.log(related);
+    }, [related]);
 
     return (
         <div className="w-full bg-indigo-200 rounded-xl h-full flex flex-col py-5 px-8 relative">
             <div className="w-fit absolute top-3 right-3">
                 <Button className={`w-fit`} variant={"outline"}>Все товары</Button>
             </div>
-            <span className={raleway}>Рекомендуем вам</span>
-            <h3 className={`text-[70px] font-bold -mt-3 ${raleway.className}`} >{related.title}</h3>
+            <span className={raleway.className}>Рекомендуем вам</span>
+            {/* <h3 className={`text-[70px] font-bold -mt-3 ${raleway.className}`} >{related.title}</h3> */}
+            <h3 className={`text-[70px] font-bold -mt-3 ${raleway.className}`} >Последние продукты</h3>
 
             <div className="grid grid-cols-3 gap-x-3 gap-y-2 w-full place-items-center">
                 {
-                    related?.products.map((child, index) => {
+                    related?.map((child, index) => {
                         return (<ProductCard key={index} variant="micro" data={child} />)
                     })
                 }
@@ -32,6 +38,9 @@ export default function HSSlideOne({ }) {
 }
 
 const fetchRelated = async () => {
+    const api = new WalmiApi;
+    const params = new URLSearchParams({ limit: 6 }).toString();
+    return await api.get("/products/", params);
     const array = {
         title: "Стеллажи",
         category: 201,

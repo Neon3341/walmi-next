@@ -1,3 +1,4 @@
+import PreloadState from "@components/etc/preloadState";
 import "./globals.css";
 import Header from "@components/header";
 export const metadata = {
@@ -12,6 +13,7 @@ export default function RootLayout({ children }) {
       <body
         className={`antialiased ${raleway.className}`}
       >
+        <PreloadState />
         <Header />
           {children}
       </body>

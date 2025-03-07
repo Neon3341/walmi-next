@@ -10,29 +10,37 @@ export default async function ProductPage({ params }) {
     const product = await getProduct(productId);
     return (
         <main>
-            <div className="flex ">
+            <div className="hidden lg:flex lg:flex-row flex-col">
                 <BreadCrumbs product={product} />
-                <div className="flex gap-x-1 items-center  w-full justify-end py-1">
-                    <span className="bg-neutral-200 px-2 rounded-lg">Артикул: {productId}</span>
-                    <span className="bg-neutral-200 px-2 rounded-lg">В сравнение</span>
-                    <span className="bg-neutral-200 px-2 rounded-lg">Поделиться</span>
+                <div className="flex gap-x-1 items-center  w-full lg:justify-end py-1 flex-wrap">
+                    <span className="bg-neutral-200 px-2 mb-1 rounded-lg">Артикул: {productId}</span>
+                    <span className="bg-neutral-200 px-2 mb-1 rounded-lg">В сравнение</span>
+                    <span className="bg-neutral-200 px-2 mb-1 rounded-lg">Поделиться</span>
                 </div>
             </div>
-            <div className="grid grid-cols-3 mt-5 gap-x-4">
-                <div className="col-span-2 grid grid-cols-2 gap-x-4">
+            <div className="grid lg:grid-cols-3 grid-cols-1 mt-5 gap-x-4">
+                <div className="lg:col-span-2 grid lg:grid-cols-2 grid-cols-1 gap-x-4">
                     <Gallery product={product}/>
                     <AboutProduct product={product} />
-                    <div className="col-span-2 bg-yellow-100 w-full mt-12 h-72">
+                    <div className="hidden lg:block lg:col-span-2 bg-yellow-100 w-full mt-12 h-72">
                         <h2 className="font-semibold text-2xl">Ещё может подойти</h2>
                     </div>
-                    <div className="col-span-2 bg-yellow-100 w-full mt-12 h-60">
+                    <div className="hidden lg:block lg:col-span-2 bg-yellow-100 w-full mt-12 h-60">
                         <h2 className="font-semibold text-2xl">О товаре</h2>
                     </div>
-                    <div className="col-span-2 bg-yellow-100 w-full mt-12 h-96">
+                    <div className="hidden lg:block lg:col-span-2 bg-yellow-100 w-full mt-12 h-96">
                         <h2 className="font-semibold text-2xl">Отзывы</h2>
                     </div>
                 </div>
                 <RightBar product={product} />
+            </div>
+            <div className="flex lg:hidden lg:flex-row flex-col">
+                <BreadCrumbs product={product} />
+                <div className="flex gap-x-1 items-center  w-full lg:justify-end py-1 flex-wrap">
+                    <span className="bg-neutral-200 px-2 mb-1 rounded-lg">Артикул: {productId}</span>
+                    <span className="bg-neutral-200 px-2 mb-1 rounded-lg">В сравнение</span>
+                    <span className="bg-neutral-200 px-2 mb-1 rounded-lg">Поделиться</span>
+                </div>
             </div>
             <div className=" bg-green-100 w-full mt-12 h-[70rem]">
                 Бесконечная сетка

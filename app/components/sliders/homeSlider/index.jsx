@@ -4,6 +4,7 @@ import HSSlideOne from "./SlideOne";
 import HSSlideTwo from "./SlideTwo";
 import Button from "@components/button/variantButton";
 
+
 export default function HomeSlider() {
     const [slide, setSlide] = useState(0);
     const [isTransitioning, setIsTransitioning] = useState(false);
@@ -12,7 +13,6 @@ export default function HomeSlider() {
 
     const slides = [
         <HSSlideOne />,
-        <HSSlideTwo />,
     ]
 
     useEffect(() => {
@@ -72,11 +72,11 @@ export default function HomeSlider() {
                 </div>
             </div>
 
-            <div className="relative rounded-xl h-full bg-neutral-200">
+            <div className="relative rounded-xl lg:h-full bg-neutral-200">
                 {slides.map((slideComponent, index) => (
                     <div
                         key={index}
-                        className={`absolute top-0 left-0 w-full h-full transition-opacity duration-300 ${
+                        className={`lg:absolute top-0 left-0 w-full h-full transition-opacity duration-300 ${
                             index === slide ? 'opacity-100 z-20' : 'opacity-0 z-0'
                         }`}
                     >

@@ -39,3 +39,17 @@ body {
     margin: 0;
   }
 }
+
+@supports (-webkit-appearance: none) {
+  .flex-col-reverse {
+    -webkit-flex-direction: column-reverse !important;
+    flex-direction: column-reverse !important;
+  }
+}
+
+/* Apply transform for Safari */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  .flex-col-reverse {
+    transform: translateZ(0); /* Triggers reflow */
+  }
+}

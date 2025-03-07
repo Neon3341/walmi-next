@@ -17,12 +17,12 @@ export default function RightBar({ product }) {
                     <span className="font-bold text-sm">15 дней до конца </span>
                 </div>
                 <div className="rounded-2xl w-full shadow-md px-5 py-2 bg-neutral-100 flex flex-col gap-y-4">
-                    <div className="flex items-end gap-x-3 justify-between">
+                    <div className="grid grid-cols-2 lg:flex items-end gap-x-3 justify-between">
                         <div className={`${inter.className} ml-3`}>
                             <p className="font-bold text-[24px] text-green-600 rounded-2xl w-fit leading-4">{priceSpaces(product.price)}  <span className="text-base">₽</span></p>
                             <p className="line-through">{priceSpaces(product.oldPrice)}  ₽</p>
                         </div>
-                        <div className="p-6 bg-blue-200 rounded-2xl">Тут будут бэйджи Яндекса</div>
+                        <div className="p-6 bg-blue-200 rounded-2xl">Я.Бэйджи</div>
                     </div>
                     <div className="flex justify-center items-center h-72 bg-blue-200 rounded-2xl">Тут будет модуль Яндекс Сплита</div>
                     <CartButtons product={product}/>

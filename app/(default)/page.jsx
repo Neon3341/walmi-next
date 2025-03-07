@@ -5,7 +5,7 @@ import HomeSlider from "@components/sliders/homeSlider";
 export default function Home() {
   return (
     <main>
-      <div className="grid grid-cols-2">
+      <div className="grid lg:grid-cols-2 grid-cols-1">
         <HomeSlider />
         <ProductGrid />
       </div>

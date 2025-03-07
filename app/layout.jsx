@@ -7,6 +7,8 @@ export const metadata = {
 };
 import { Raleway } from "@next/font/google";
 const raleway = Raleway();
+
+
 export default function RootLayout({ children }) {
   return (
     <html lang="ru">
@@ -16,6 +18,7 @@ export default function RootLayout({ children }) {
         <PreloadState />
         <Header />
           {children}
+          
       </body>
     </html>
   );

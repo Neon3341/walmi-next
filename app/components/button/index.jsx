@@ -9,7 +9,7 @@ export default function SimpleBtn({ ico = false, id, className, children, onClic
 
     return (
         <div id={id} className={`${className} `} onClick={onClick}>
-            {icon}<span>{children}</span>
+            {icon}{children?.length && <span>{children}</span>}
         </div>
     )
 } 

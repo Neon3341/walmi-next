@@ -17,13 +17,13 @@ export default function HSSlideOne({ }) {
     }, [related]);
 
     return (
-        <div className="w-full bg-indigo-200 rounded-xl h-fit lg:h-full flex flex-col py-5 px-8 relative">
+        <div className="w-full bg-indigo-200 rounded-xl h-fit lg:h-full flex flex-col py-5 lg:px-8 px-3 relative">
             <div className="w-fit absolute top-3 right-3">
                 <Button className={`w-fit`} variant={"outline"}>Все товары</Button>
             </div>
             <span className={raleway.className}>Рекомендуем вам</span>
             {/* <h3 className={`text-[70px] font-bold -mt-3 ${raleway.className}`} >{related.title}</h3> */}
-            <h3 className={`text-[50px] lg:text-[70px] font-bold -mt-3 ${raleway.className}`} >Последние продукты</h3>
+            <h3 className={`text-[50px] lg:text-[70px] font-bold lg:-mt-3 mb-8 lg:pb-0 ${raleway.className}`} style={{lineHeight: "42px"}}>Последние продукты</h3>
 
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-3 gap-y-2 w-full place-items-center">
                 {

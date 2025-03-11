@@ -69,16 +69,16 @@ function CartButtonsInner({ product, displayAddToCart }) {
 
   return (
     <>
-      <div className="fixed lg:relative bottom-0 left-0 w-full  bg-neutral-100 lg:bg-transparent lg:p-0 p-5 rounded-ss-2xl rounded-se-2xl flex flex-row gap-x-2">
-        <div className={`${cart.some(item => item.id === product._id) ? "w-full opacity-100" : "w-0 opacity-0"} text-3xl transition-all duration-400 h-full flex border rounded-2xl overflow-clip`}>
+      <div className={`${displayAddToCart ? "fixed lg:relative mb-14 pb-6 lg:mb-0 lg:pb-0 bottom-0 left-0 w-full rounded-ss-2xl rounded-se-2xl bg-neutral-100" : ""}   lg:bg-transparent lg:p-0 p-5  flex flex-row gap-x-2`}>
+        <div className={`${cart.some(item => item.id === product._id) ? "w-full opacity-100" : "w-0 opacity-0"} text-2xl lg:text-3xl transition-all duration-400 h-full flex border rounded-2xl overflow-clip`}>
           <Button onClick={decrement} className={"px-4 h-full"}>-</Button>
-          <input type="number" onChange={handleInputChange} className={`${inter.className} w-full text-center text-2xl`} value={cart.find(item => item.id === product._id)?.quantity || 0} />
+          <input type="number" onChange={handleInputChange} className={`${inter.className} w-full text-center text-lg lg:text-2xl`} value={cart.find(item => item.id === product._id)?.quantity || 0} />
           <Button onClick={increment} className={"px-4 h-full"}>+</Button>
         </div>
         {displayAddToCart && <div className="w-full">
           <Button onClick={onClickCart} className={"font-semibold py-3"} variant={"sky"}>{cart.some(item => item.id === product._id) ? "К Корзине" : "В Корзину"}</Button>
         </div>}
-        <div className={`${cart.some(item => item.id === product._id) ? "w-0 opacity-0" : "w-full opacity-100"} transition-all duration-400`}>
+        <div className={`${cart.some(item => item.id === product._id) ? "w-0 opacity-0 h-0" : "w-full opacity-100"} transition-all duration-400`}>
           <Button onClick={onClickFavorites} className={"py-3 h-full"} variant={"outline"} ico={favorites.indexOf(product._id) == -1 ? Heart : HeartFill}></Button>
         </div>
       </div>

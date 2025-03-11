@@ -41,22 +41,27 @@ function CartLeftSideInner() {
             <div className="flex flex-col gap-y-2">
                 {cart.map((child, i) => {
                     return (
-                        <div key={i} className="grid grid-cols-10 gap-x-2 border-b border-neutral-300 pb-3">
-                            <div className="col-span-2 w-full h-auto rounded-2xl overflow-clip ">
-                                {productsData[child.id] && <Image className="w-full " src={productsData[child.id]?.media.thumbnail} alt="thumb" unoptimized width={200} height={200} priority={true} /> || "Еще загружаем..."}
+                        <div key={i} className="lg:grid lg:grid-cols-10 flex flex-row flex-wrap gap-x-2 border-b border-neutral-300 pb-3">
+                            <div className="lg:col-span-2 basis-1/4 h-auto rounded-2xl overflow-clip ">
+                                {productsData[child.id] && <Image className="w-full " src={productsData[child.id]?.media.thumbnail} alt="thumb" unoptimized width={0} height={200} priority={true} /> || "Еще загружаем..."}
                             </div>
-                            <div className="col-span-5">
-                                <h3>{productsData[child.id]?.title || "Еще загружаем..."}</h3>
+                            <div className="lg:col-span-5">
+                                <h3 className="w-full">{productsData[child.id]?.title || "Еще загружаем..."}</h3>
+                                <div className={`${inter.className} ml-1 mt-1 block lg:hidden`}>
+                                    <p className="font-bold text-[20px] text-green-600 rounded-2xl w-fit leading-4">{priceSpaces(productsData[child.id]?.price)}  <span className="text-base">₽ </span></p>
+                                    {productsData[child.id]?.oldPrice > 0 && <p className="line-through text-[12px]">{priceSpaces(productsData[child.id]?.oldPrice)}  ₽</p>}
+                                    <span className="font-light text-sm">x {child.quantity} = {priceSpaces(productsData[child.id]?.price * child.quantity)}<span className="text-base">₽ </span></span>
+                                </div>
                             </div>
-                            <div className="col-span-2 flex flex-col justify-between">
-                                <div className={`${inter.className} ml-1 mt-1`}>
+                            <div className="lg:col-span-2 basis-1 grow flex flex-col justify-between">
+                                <div className={`${inter.className} ml-1 mt-1 hidden lg:block`}>
                                     <p className="font-bold text-[20px] text-green-600 rounded-2xl w-fit leading-4">{priceSpaces(productsData[child.id]?.price)}  <span className="text-base">₽ </span></p>
                                     {productsData[child.id]?.oldPrice > 0 && <p className="line-through text-[12px]">{priceSpaces(productsData[child.id]?.oldPrice)}  ₽</p>}
                                     <span className="font-light text-sm">x {child.quantity} = {priceSpaces(productsData[child.id]?.price * child.quantity)}<span className="text-base">₽ </span></span>
                                 </div>
                                 {productsData[child.id] && <CartButtons product={productsData[child.id]} displayAddToCart={false} /> || "Еще загружаем..."}
                             </div>
-                            <div className="flex flex-col">
+                            <div className="flex gap-x-3 items-center lg:flex-col">
                                 {productsData[child.id] && <CartFavorites product={productsData[child.id]} />}
                                 {productsData[child.id] && <SetZeroBtn product={productsData[child.id]} />}
                             </div>

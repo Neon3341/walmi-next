@@ -31,10 +31,11 @@ function Card({ data, config }) {
     const containerRef = useRef(null);
     const { gallery = [] } = data.media;
 
-    const { handleMouseMove, handleMouseLeave } = useImageHover({
-        containerRef,
-        gallery,
-        setCurrentIndex,
+    const { handleMouseMove, handleMouseLeave, handleTouchMove, handleTouchEnd } = 
+    useImageHover({
+      containerRef,
+      gallery,
+      setCurrentIndex,
     });
 
     return (
@@ -42,9 +43,12 @@ function Card({ data, config }) {
             <div
                 ref={containerRef}
                 className={`relative w-full rounded-xl ${config.containerClasses}`}
-                style={{ paddingTop: '100%' }}
+                style={{ paddingTop: '100%', touchAction: 'none' }}
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+                onTouchStart={(e) => e.preventDefault()}
             >
                 <ProductImage
                     src={data.media.thumbnail}
@@ -127,20 +131,36 @@ function Price({ price }) {
 }
 
 const useImageHover = ({ containerRef, gallery, setCurrentIndex }) => {
-    const handleMouseMove = (e) => {
-        if (!containerRef.current || gallery.length === 0) return;
-
-        const rect = containerRef.current.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const index = Math.floor((x / rect.width) * gallery.length);
-
-        setCurrentIndex(Math.min(index, gallery.length - 1));
+    const handleMove = (clientX) => {
+      if (!containerRef.current || gallery.length === 0) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      const x = clientX - rect.left;
+      const index = Math.floor((x / rect.width) * gallery.length);
+      setCurrentIndex(Math.min(index, gallery.length - 1));
     };
-
+  
+    const handleMouseMove = (e) => {
+      handleMove(e.clientX);
+    };
+  
+    const handleTouchMove = (e) => {
+      if (e.touches.length === 0) return;
+      const touch = e.touches[0];
+      handleMove(touch.clientX);
+      e.preventDefault();
+    };
+  
     const handleMouseLeave = () => setCurrentIndex(-1);
-
-    return { handleMouseMove, handleMouseLeave };
-};
+    const handleTouchEnd = () => setCurrentIndex(-1);
+  
+    return { 
+      handleMouseMove, 
+      handleMouseLeave, 
+      handleTouchMove, 
+      handleTouchEnd 
+    };
+  };
+  
 
 const priceSpaces = (price) =>
     price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');

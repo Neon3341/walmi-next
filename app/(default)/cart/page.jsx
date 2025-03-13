@@ -1,3 +1,4 @@
+import CartRightSide from "@components/cart/calc";
 import CartLeftSide from "@components/cart/cart";
 import GetQuantity from "@components/cart/quantity";
 
@@ -10,7 +11,7 @@ export default async function Home() {
         </div>
         <div className="lg:grid lg:grid-cols-6 lg:gap-x-3 flex flex-col">
           <CartLeftSide />
-          <div className="col-span-2 bg-amber-100">Оформление</div>
+          <CartRightSide />
         </div>
       </div>
     </main>

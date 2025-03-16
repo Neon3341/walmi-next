@@ -42,9 +42,9 @@ function CartLeftSideInner() {
                 {cart.map((child, i) => {
                     return (
                         <div key={i} className="lg:grid lg:grid-cols-10 flex flex-row flex-wrap gap-x-2 border-b border-neutral-300 pb-3">
-                            <div className="flex gap-x-2 lg:grid lg:grid-cols-7 lg:col-span-7">
+                            <div className="flex gap-x-2 lg:col-span-7">
                                 <div className="lg:col-span-2 basis-1/4 h-auto rounded-2xl overflow-clip ">
-                                    {productsData[child.id] && <Image className="w-full min-w-24" src={productsData[child.id]?.media.thumbnail} alt="thumb" unoptimized width={0} height={200} priority={true} /> || "Еще загружаем..."}
+                                    {productsData[child.id] && <Image className="w-full min-w-24 lg:min-w-32" src={productsData[child.id]?.media.thumbnail} alt="thumb" unoptimized width={0} height={200} priority={true} /> || "Еще загружаем..."}
                                 </div>
                                 <div className="lg:col-span-5">
                                     <h3 className="w-full">{productsData[child.id]?.title || "Еще загружаем..."}</h3>

@@ -14,7 +14,7 @@ export default function AboutProduct({ product }) {
             </div>
             <div>
             {product.variants.length < 1 && <ProductVariantSelector variants={product.variants} variantsNames={product.variantsNames} specs={product.specs} />}
-                Характеристики и другие полезные вещи
+                 
             </div>
         </div>
     )

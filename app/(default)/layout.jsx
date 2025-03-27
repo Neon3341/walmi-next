@@ -1,6 +1,7 @@
 import "../globals.css";
 import Header from "@components/header";
-import MobileHeader from "@components/mobile/menu";
+import MobileMenu from "@components/mobile/menu";
+import MobileHeader from "@components/header/mobile";
 
 import PreloadState from "@components/etc/preloadState";
 
@@ -17,6 +18,7 @@ export default function RootLayout({ children }) {
     <div className={`${raleway.className}`}>
       <PreloadState />
       <MobileHeader />
+      <MobileMenu />
       <Header />
       <div className="px-8 max-w-box-xl lg:my-10 mx-auto flex flex-col pb-24 pt-6 lg:pb-0 lg:pt-0">
         {children}

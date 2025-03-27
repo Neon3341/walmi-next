@@ -2,7 +2,7 @@
 import Link from "next/link";
 import SimpleBtn from ".";
 
-export default function Button({ children, variant, id, className, link, ico = false, onClick = false }) {
+export default function Button({ children, variant, id, className, link, ico = false, onClick = false, disabled = false}) {
     let classes = "select-none  gap-x-2 py-2 px-8 rounded-xl cursor-pointer transition-all hover:brightness-110 flex flex-row justify-center items-center content-center text-nowrap flex";
     const F = () => {
         console.log("Oops, there is no Action specified for this button...")
@@ -33,12 +33,12 @@ export default function Button({ children, variant, id, className, link, ico = f
     if (link) {
         return (
             <Link href={link} className="hover:underline ">
-                <SimpleBtn ico={ico ? ico : false} id={id} className={classes} onClick={onClick ? onClick : F}>{children}</SimpleBtn>
+                <SimpleBtn disabled={disabled} ico={ico ? ico : false} id={id} className={classes} onClick={onClick ? onClick : F}>{children}</SimpleBtn>
             </Link>
         );
     } else {
         return (
-            <SimpleBtn ico={ico ? ico : false} onClick={onClick ? onClick : F} id={id} className={classes}>{children}</SimpleBtn>
+            <SimpleBtn disabled={disabled} ico={ico ? ico : false} onClick={onClick ? onClick : F} id={id} className={classes}>{children}</SimpleBtn>
         );
     }
 }

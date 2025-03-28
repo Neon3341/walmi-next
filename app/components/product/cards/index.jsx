@@ -98,7 +98,7 @@ function ProductInfo({ data, config }) {
     return (
         <>
             {config.showTitle && (
-                <p className="font-semibold text-lg leading-5 line-clamp-2">{data.title}</p>
+                <p className="font-semibold text-lg leading-5 line-clamp-2">{data.title.ru}</p>
             )}
             <Price price={data.price} />
         </>

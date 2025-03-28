@@ -4,6 +4,7 @@ import MobileMenu from "@components/mobile/menu";
 import MobileHeader from "@components/header/mobile";
 
 import PreloadState from "@components/etc/preloadState";
+import PreloadRefs from "@components/etc/preloadRefs";
 
 export const metadata = {
   title: "Walmi - Производитель современной мебели",
@@ -17,6 +18,7 @@ export default function RootLayout({ children }) {
   return (
     <div className={`${raleway.className}`}>
       <PreloadState />
+      <PreloadRefs />
       <MobileHeader />
       <MobileMenu />
       <Header />

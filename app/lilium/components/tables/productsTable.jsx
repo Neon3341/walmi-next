@@ -14,7 +14,7 @@ export default function LiliumProductTable({ products }) {
                         </div>
                         <div className="w-[60%] grow flex flex-col">
                             <div>
-                                <span className="text-base font-semibold">{child.title} | </span> <span className="text-[12px]">{priceSpaces(child.price)} р</span>
+                                <span className="text-base font-semibold">{child.title.ru} | </span> <span className="text-[12px]">{priceSpaces(child.price)} р</span>
                             </div>
                             <LiliumProductMainActions product={child}/>
                         </div>

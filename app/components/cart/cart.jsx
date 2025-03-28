@@ -1,6 +1,8 @@
 "use client"
-
+import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { setCart } from "@storage/localUserSlice";
+import Button from "@components/button/variantButton";
 
 
 import ReduxProvider from "@components/layouts/reduxProvider";
@@ -32,14 +34,30 @@ function CartLeftSideInner() {
     useEffect(() => {
         cart.map((child, i) => {
             getProduct(child.id).then((data) => setProductsData((prev) => { return { ...prev, [child.id]: data } }))
+                .catch((error) => {
+                    console.log(error);
+                    setZero(child.id)
+                });
         })
     }, [cart.length]);
 
+    const handleCartUpdate = useCallback((updater) => {
+        const updatedCart = updater(cart).filter(item => item.quantity > 0);
+        dispatch(setCart(updatedCart));
+    }, [cart, dispatch]);
+
+    const updateQuantity = useCallback((newQuantity, productId) => {
+        handleCartUpdate(prev => prev.map(item =>
+            item.id === productId ? { ...item, quantity: Math.max(0, newQuantity) } : item
+        ));
+    }, [handleCartUpdate]);
+
+    const setZero = useCallback((productId) => updateQuantity(0, productId), [updateQuantity]);
 
     return (
         <div className="col-span-4">
             <div className="flex flex-col gap-y-2">
-                {cart.map((child, i) => {
+                {cart.length > 0 ? cart.map((child, i) => {
                     return (
                         <div key={i} className="lg:grid lg:grid-cols-10 flex flex-row flex-wrap gap-x-2 border-b border-neutral-300 pb-3">
                             <div className="flex gap-x-2 lg:col-span-7">
@@ -69,7 +87,17 @@ function CartLeftSideInner() {
                             </div>
                         </div>
                     )
-                })}
+                }) :
+                    <main className="flex flex-col items-center ">
+                        <div className="lg:max-w-[80%] min-h-96 w-full lg:min-w-[600px] flex flex-col gap-y-4 justify-center">
+                            <div className="flex flex-col items-center gap-x-2">
+                                <h1 className="text-2xl font-semibold ">Ваша корзина пуста</h1>
+                                <p>Как только вы добавите товары в корзину, они отобразятся здесь</p>
+                            </div>
+                            <Button variant={"outline"} link={"/"}>Вернуться на главную</Button>
+                        </div>
+                    </main>
+                }
             </div>
         </div>
     )
@@ -77,7 +105,7 @@ function CartLeftSideInner() {
 
 async function getProduct(prodId) {
     const api = new WalmiApi;
-    const response = await api.get(`/products/${prodId}/`).catch(error => console.log(error));
+    const response = await api.get(`/products/${prodId}/`)
     return response.data;
 }
 

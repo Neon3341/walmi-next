@@ -1,91 +1,122 @@
 "use client"
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
+import ReduxProvider from '@components/layouts/reduxProvider';
+import { useSelector } from "react-redux";
 
-const ProductVariantSelector = ({ variantsNames, variants, specs }) => {
-  const [selected, setSelected] = useState(() =>
-    Object.keys(specs).reduce((acc, key) => ({ ...acc, [key]: specs[key].value }), {})
-  );
+const ProductVariantSelectorInner = ({
+  variantsNames = {},
+  variants = [],
+  currentSpecs = {},
+  currentProductId
+}) => {
+  const router = useRouter();
+  const [selectedSpecs, setSelectedSpecs] = useState({ ...currentSpecs });
+  const { specs } = useSelector((state) => state.refs);
 
-  const allPossibleValues = Object.keys(variantsNames).reduce((acc, key) => {
-    acc[key] = [...new Set(variants.map(v => v.diffSpecs[key]))];
-    return acc;
-  }, {});
+  const allPossibleValues = useMemo(() => {
+    return Object.keys(variantsNames).reduce((acc, key) => {
+      acc[key] = [...new Set(variants.map(v => v.specs[key]))];
+      return acc;
+    }, {});
+  }, [variants, variantsNames]);
 
-  const getAvailableOptions = (currentKey) => {
-    const otherKeys = { ...selected };
-    delete otherKeys[currentKey];
+  const availableOptions = useMemo(() => {
+    const newAvailableOptions = {};
 
-    return variants
-      .filter(variant =>
-        Object.entries(otherKeys).every(([key, value]) =>
-          value === null || variant.diffSpecs[key] === value
+    Object.keys(variantsNames).forEach(key => {
+      const activeFilters = { ...selectedSpecs };
+      delete activeFilters[key];
+
+      const availableVariants = variants.filter(variant =>
+        Object.entries(activeFilters).every(([k, v]) =>
+          v === null || variant.specs[k] === v
         )
-      )
-      .map(v => v.diffSpecs[currentKey])
-      .filter((v, i, arr) => arr.indexOf(v) === i);
-  };
+      );
 
-  useEffect(() => {
-    const newSelected = { ...selected };
-    let hasChanges = false;
-
-    Object.keys(selected).forEach(key => {
-      if (selected[key] === null) return;
-      const available = getAvailableOptions(key);
-      if (!available.includes(selected[key])) {
-        newSelected[key] = null;
-        hasChanges = true;
-      }
+      newAvailableOptions[key] = [
+        ...new Set(availableVariants.map(v => v.specs[key]))
+      ];
     });
 
-    hasChanges && setSelected(newSelected);
-  }, [selected, variants]);
+    return newAvailableOptions;
+  }, [selectedSpecs, variants, variantsNames]);
 
-  const handleSelect = (key, value) => {
-    setSelected(prev => ({
+  const findExactVariant = useCallback(() => {
+    return variants.find(variant =>
+      Object.entries(selectedSpecs).every(([k, v]) => variant.specs[k] === v)
+    );
+  }, [selectedSpecs, variants]);
+
+  useEffect(() => {
+    const exactVariant = findExactVariant();
+    if (exactVariant && exactVariant.id !== currentProductId) {
+      router.push(`/catalog/product/${exactVariant.id}`);
+    }
+  }, [selectedSpecs, currentProductId, router, findExactVariant]);
+
+  useEffect(() => {
+    setSelectedSpecs({ ...currentSpecs });
+  }, [currentSpecs]);
+
+  const handleSpecsChange = (key, value) => {
+    setSelectedSpecs(prev => ({
       ...prev,
       [key]: value
     }));
   };
 
   return (
-    <div className="space-y-2">
-      {Object.entries(variantsNames).map(([key, label]) => {
-        const availableOptions = getAvailableOptions(key);
+    <div className="space-y-4">
+      {Object.entries(variantsNames).map(([key, label]) => (
+        <div key={key} className="space-y-2">
+          <h3 className="text-sm font-medium">{specs.find(item => item.slug === label)?.title?.ru || label}</h3>
+          <div className="flex flex-wrap gap-2">
+            {allPossibleValues[key]?.map(value => {
+              const isSelected = selectedSpecs[key] === value;
+              const isAvailable = availableOptions[key]?.includes(value);
 
-        return (
-          <div key={key}>
-            <h3 className="mb-1 text-sm font-semibold">{label}</h3>
-            <div className="flex flex-wrap gap-2">
-              {allPossibleValues[key].map(value => {
-                const isSelected = selected[key] === value;
-                const isAvailable = availableOptions.includes(value);
-
-                return (
-                  <button
-                    key={value}
-                    onClick={() => handleSelect(key, value)}
-                    disabled={!isAvailable}
-                    className={`
-                      px-3 py-1.5 text-sm rounded-md border
-                      ${isSelected
-                        ? 'bg-neutral-500 text-white border-neutral-500'
-                        : 'bg-white text-gray-800 border-neutral-200'}
-                      ${!isAvailable
-                        ? 'opacity-50 cursor-not-allowed'
-                        : ' hover:border-neutral-500'}
-                    `}
-                  >
-                    {value}
-                  </button>
-                );
-              })}
-            </div>
+              return (
+                <button
+                  key={value}
+                  onClick={() => handleSpecsChange(key, value)}
+                  disabled={!isAvailable}
+                  className={`
+                    px-3 py-1.5 text-sm rounded-md border transition-colors
+                    ${isSelected
+                      ? 'bg-neutral-800 text-white border-neutral-800'
+                      : 'bg-white text-neutral-700 border-neutral-200'}
+                    ${!isAvailable
+                      ? 'opacity-50 cursor-not-allowed'
+                      : 'hover:border-neutral-800'}
+                  `}
+                >
+                  {value}
+                </button>
+              );
+            })}
           </div>
-        );
-      })}
+        </div>
+      ))}
     </div>
   );
 };
+
+const ProductVariantSelector = ({ variantsNames = {},
+  variants = [],
+  currentSpecs = {},
+  currentProductId }) => {
+
+  return (
+    <ReduxProvider>
+      <ProductVariantSelectorInner
+        variantsNames={variantsNames}
+        variants={variants}
+        currentSpecs={currentSpecs}
+        currentProductId={currentProductId}
+      />
+    </ReduxProvider>
+  )
+}
 
 export default ProductVariantSelector;

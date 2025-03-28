@@ -20,7 +20,7 @@ export default function Gallery({ product }) {
                     })
                 }
             </div>
-            <div className=" relative lg:w-[100%] lg:h-full h-fit w-full rounded-2xl overflow-clip bg-red-200">
+            <div className=" relative lg:w-[100%] lg:h-full h-fit w-full rounded-2xl overflow-clip  ">
                 <div className={`opacity-0 top-0 left-0 h-full w-full flex justify-center items-center transition-opacity`} >
                     <Image className="w-full" src={product.media.thumbnail} alt="thumb" unoptimized width={200} height={200} priority={true} />
                 </div>

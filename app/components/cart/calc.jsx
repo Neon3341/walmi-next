@@ -29,7 +29,7 @@ export function CartRightSideInner({ showButton = true }) {
         if (cart.length != 0) calcCart(cart).then((data) => setCartCalc(data))
     }, [cart]);
 
-    return (
+    if (cart.length > 0) return (
         <>
             <div className="h-fit mb-16 col-span-2 rounded-2xl py-2 px-4 mt-2 bg-neutral-100">
                 <div className="flex justify-between">

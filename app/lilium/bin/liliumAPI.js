@@ -1,66 +1,102 @@
+const DEBUG = false;
 export default class LiliumApi {
-    imageBasePath = "http://192.168.55.98:3220/media";
-    basePath = "http://192.168.55.98:3220";
+    imageBasePath = "http://localhost:3220/media";
+    basePath = "http://localhost:3220";
 
 
-    async get(endpoint, params = "") {
+    async get(endpoint, params = "", token = "") {
         return await Promise.resolve().then(() => {
             const url = `${this.basePath}${endpoint}${params && `?${params}`}`
-            console.log("fetch: " + url)
-            return fetch(url, {method: 'GET'});
-        }).then((response) => {
+            DEBUG && console.log("fetch (get): " + url);
+            return fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "authorization": `Bearer ${token}`
+                }
+            });
+        }).then(async (response) => {
             if (!response.ok) {
-                throw new Error(`Http error occurred in get Promise.resolve()! Http status: ${response.status}`);
+                const errorData = await response.json();
+                throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
             }
-            return response.json();
+            const res = await response.json()
+            DEBUG && console.log(res);
+            return res;
         }).catch((err) => {
-            console.error(err)
-        })
+            console.error(err);
+            throw err;
+        });
     }
 
-    async post(endpoint, body) {
+    async post(endpoint, body, token = "") {
         return await Promise.resolve().then(() => {
-            const url = `${this.basePath}${endpoint}`
-            console.log("fetch: " + url)
-            return fetch(url, { method: 'POST', body: JSON.stringify(body)});
-        }).then((response) => {
+            const url = `${this.basePath}${endpoint}`;
+            DEBUG && console.log("fetch (post): " + url);
+            return fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(body)
+            });
+        }).then(async (response) => {
             if (!response.ok) {
-                throw new Error(`Http error occurred in post Promise.resolve()! Http status: ${response.status}`);
+                const errorData = await response.json();
+                throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
             }
-            return response.json();
+            const res = await response.json()
+            DEBUG && console.log(res);
+            return res;
         }).catch((err) => {
-            console.error(err)
-        })
+            console.error(err);
+            throw err;
+        });
     }
 
-    async put(endpoint, body) {
+    async put(endpoint, body, token = "") {
         return await Promise.resolve().then(() => {
             const url = `${this.basePath}${endpoint}`
-            console.log("fetch: " + url)
-            return fetch(url, { method: 'PUT', body: JSON.stringify(body)});
-        }).then((response) => {
+            DEBUG && console.log("fetch (put): " + url)
+            return fetch(url, {
+                method: 'PUT', body: JSON.stringify(body),
+                "authorization": `Bearer ${token}`
+            });
+        }).then(async (response) => {
             if (!response.ok) {
-                throw new Error(`Http error occurred in put Promise.resolve()! Http status: ${response.status}`);
+                const errorData = await response.json();
+                throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
             }
-            return response.json();
+            const res = await response.json()
+            DEBUG && console.log(res);
+            return res;
         }).catch((err) => {
-            console.error(err)
-        })
+            console.error(err);
+            throw err;
+        });
     }
-    
-    async delete(endpoint, body) {
+
+    async delete(endpoint, body, token = "") {
         return await Promise.resolve().then(() => {
             const url = `${this.basePath}${endpoint}`
-            console.log("fetch: " + url)
-            return fetch(url, { method: 'DELETE', body: JSON.stringify(body)});
-        }).then((response) => {
+            DEBUG && console.log("fetch (delete): " + url)
+            return fetch(url, {
+                method: 'DELETE', body: JSON.stringify(body),
+                "authorization": `Bearer ${token}`
+            });
+        }).then(async (response) => {
             if (!response.ok) {
-                throw new Error(`Http error occurred in delete Promise.resolve()! Http status: ${response.status}`);
+                const errorData = await response.json();
+                throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
             }
-            return response.json();
+            const res = await response.json()
+            DEBUG && console.log(res);
+            return res;
         }).catch((err) => {
-            console.error(err)
-        })
+            console.error(err);
+            throw err;
+        });
     }
 }
 

@@ -40,7 +40,7 @@ jobs:
         # Проверяем и устанавливаем PM2 если нужно
         if ! command -v pm2 &> /dev/null; then
           echo "Installing PM2..."
-          sudo npm install -g pm2
+          npm install -g pm2
         fi
         
         # Проверяем и устанавливаем git если нужно

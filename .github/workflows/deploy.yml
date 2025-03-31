@@ -1,49 +1,57 @@
-name: Deploy WalmiNext App
+name: Deploy Walmi Next.js App
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  PM2_APP_NAME: walmi-next
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-    - name: Set up SSH
-      uses: webfactory/ssh-agent@v0.5.3
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Configure SSH
+      uses: webfactory/ssh-agent@v0.9.0
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    # Add known hosts first to avoid strict host checking
-    - name: Add server to known hosts
+    - name: Verify SSH connection
       run: |
-        mkdir -p ~/.ssh
-        ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+        ssh -T -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} echo "SSH connection successful"
 
-    # Test SSH connection first
-    - name: Test SSH connection
-      run: ssh ${{ secrets.USER }}@${{ secrets.HOST }} "echo 'SSH connection successful!'"
-
-    # Set environment variable for PM2 app name
-    - name: Set PM2 app name
-      run: echo "PM2_APP_NAME=${{ secrets.PM2_APP_NAME }}" >> $GITHUB_ENV
-
-    # Then proceed with your deployment steps
-    - name: Stop application with PM2
-      run: ssh ${{ secrets.USER }}@${{ secrets.HOST }} "pm2 stop $PM2_APP_NAME || true"
-    
-    - name: Pull latest code
-      run: ssh ${{ secrets.USER }}@${{ secrets.HOST }} "cd ${{ secrets.DIRECTORY_PATH }} && git pull origin main"
-    
-    - name: Install dependencies
-      run: ssh ${{ secrets.USER }}@${{ secrets.HOST }} "cd ${{ secrets.DIRECTORY_PATH }} && npm install"
-    
-    - name: Build the project
-      run: ssh ${{ secrets.USER }}@${{ secrets.HOST }} "cd ${{ secrets.DIRECTORY_PATH }} && npm run build"
-    
-    - name: Start application with PM2
-      run: ssh ${{ secrets.USER }}@${{ secrets.HOST }} "cd ${{ secrets.DIRECTORY_PATH }} && pm2 start npm --name $PM2_APP_NAME -- start"
+    - name: Deploy application
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+        set -e
+        cd ${{ secrets.APP_DIRECTORY }}
+        
+        echo "Stopping existing application..."
+        pm2 stop "$PM2_APP_NAME" || true
+        
+        echo "Pulling latest changes..."
+        git pull origin main
+        
+        echo "Installing dependencies..."
+        npm ci --prefer-offline
+        
+        echo "Building application..."
+        npm run build
+        
+        echo "Starting application..."
+        pm2 start npm --name "$PM2_APP_NAME" -- start
+        
+        echo "Saving PM2 process list..."
+        pm2 save
+        EOF

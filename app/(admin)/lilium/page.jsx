@@ -1,8 +1,8 @@
 
-import { Borel } from "@next/font/google";
-const borel = Borel({
-  weight: "400",
-  subsets: ["latin"],
+import { Borel } from "next/font/google";
+const borel = Borel({ 
+  subsets: ['latin' ], 
+  weight: ['400'],
 });
 
 export default function LiliumHome() {

@@ -11,8 +11,11 @@ export const metadata = {
   description: "Официальный магазин фабрики-производителя Walmi. Здесь вы найдете исключительно оригинальные товары бренда Walmi.",
 };
 
-import { Raleway } from "@next/font/google";
-const raleway = Raleway();
+import { Raleway } from "next/font/google";
+const raleway = Raleway({
+  subsets: ['latin', 'cyrillic'],
+  display: 'swap',
+});
 
 export default function RootLayout({ children }) {
   return (

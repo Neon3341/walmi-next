@@ -5,8 +5,11 @@ import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCart, setFavorites } from "@storage/localUserSlice";
 
-import { Inter } from "@next/font/google";
-const inter = Inter();
+import { Inter } from "next/font/google";
+const inter = Inter({
+  subsets: ['latin', 'cyrillic'],
+  display: 'swap',
+});
 
 import ReduxProvider from "@components/layouts/reduxProvider";
 

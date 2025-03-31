@@ -13,8 +13,11 @@ import CartButtons from "@components/product/single/cartButtons";
 import CartFavorites from "./favoriteBtns";
 import SetZeroBtn from "./setZeroBtn";
 
-import { Inter } from "@next/font/google";
-const inter = Inter();
+import { Inter } from "next/font/google";
+const inter = Inter({
+    subsets: ['latin', 'cyrillic'], 
+    display: 'swap',
+}); 
 
 export default function CartLeftSide() {
 

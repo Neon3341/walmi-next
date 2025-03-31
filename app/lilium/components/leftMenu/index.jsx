@@ -1,12 +1,12 @@
 "use client"
-import { Borel } from "@next/font/google";
+import { Borel } from "next/font/google";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react"
 
-const borel = Borel({
-  weight: "400",
-  subsets: ["latin"],
+const borel = Borel({ 
+    subsets: ['latin' ],
+    weight: ['400'],
 });
 
 export default function LiliumLeftMenu({ }) {

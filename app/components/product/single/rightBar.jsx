@@ -1,7 +1,10 @@
 import Image from "next/image";
 
-import { Inter } from "@next/font/google";
-const inter = Inter();
+import { Inter } from "next/font/google";
+const inter = Inter({
+  subsets: ['latin', 'cyrillic'],
+  display: 'swap',
+});
 
 import CartButtons from "./cartButtons";
 

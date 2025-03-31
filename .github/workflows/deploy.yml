@@ -36,8 +36,15 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << EOF
         set -e
-        cd ${{ secrets.APP_DIRECTORY }}
-        
+    
+        # Create app directory if it doesn't exist
+        if [ ! -d "${{ secrets.APP_DIRECTORY }}" ]; then
+          echo "Creating application directory..."
+          mkdir -p "${{ secrets.APP_DIRECTORY }}"
+        fi
+    
+        cd "${{ secrets.APP_DIRECTORY }}"
+    
         echo "Stopping existing application..."
         pm2 stop "$PM2_APP_NAME" || true
         
@@ -48,22 +55,24 @@ jobs:
           git remote add origin $GIT_REPO
           git fetch
           git checkout -t origin/main || git checkout main
+        else
+          echo "Existing git repository found"
         fi
-        
+    
         echo "Pulling latest changes..."
         git reset --hard
         git clean -fd
         git pull origin main
-        
+    
         echo "Installing dependencies..."
         npm ci --prefer-offline
         
         echo "Building application..."
         npm run build
-        
+    
         echo "Starting application..."
         pm2 start npm --name "$PM2_APP_NAME" -- start
-        
+    
         echo "Saving PM2 process list..."
         pm2 save
         EOF

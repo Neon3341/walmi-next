@@ -36,7 +36,15 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << EOF
         set -e
+
+        # Load profile to get PATH settings
+        source ~/.bashrc || true
+        source ~/.profile || true
     
+        # Verify Node/npm are available
+        command -v node || { echo "Node.js not found in PATH"; exit 1; }
+        command -v npm || { echo "npm not found in PATH"; exit 1; }
+        
         # Create app directory if it doesn't exist
         if [ ! -d "${{ secrets.APP_DIRECTORY }}" ]; then
           echo "Creating application directory..."

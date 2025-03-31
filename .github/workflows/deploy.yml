@@ -1,4 +1,4 @@
-name: Deploy Walmi Next.js App
+name: Deploy Walmi App
 
 on:
   push:
@@ -7,6 +7,7 @@ on:
 
 env:
   PM2_APP_NAME: walmi-next
+  NODE_VERSION: '22' 
 
 jobs:
   deploy:
@@ -15,12 +16,6 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        cache: 'npm'
 
     - name: Configure SSH
       uses: webfactory/ssh-agent@v0.9.0
@@ -31,27 +26,56 @@ jobs:
       run: |
         ssh -T -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} echo "SSH connection successful"
 
+    - name: Install Node.js and PM2 on server if needed
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+        set -e
+        # Проверяем и устанавливаем Node.js если нужно
+        if ! command -v node &> /dev/null; then
+          echo "Installing Node.js..."
+          curl -fsSL https://deb.nodesource.com/setup_$NODE_VERSION.x | sudo -E bash -
+          sudo apt-get install -y nodejs
+        fi
+        
+        # Проверяем и устанавливаем PM2 если нужно
+        if ! command -v pm2 &> /dev/null; then
+          echo "Installing PM2..."
+          sudo npm install -g pm2
+        fi
+        
+        # Проверяем и устанавливаем git если нужно
+        if ! command -v git &> /dev/null; then
+          echo "Installing Git..."
+          sudo apt-get install -y git
+        fi
+        EOF
+
     - name: Deploy application
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
         set -e
         cd ${{ secrets.APP_DIRECTORY }}
         
-        echo "Stopping existing application..."
-        pm2 stop "$PM2_APP_NAME" || true
+        echo "1. Stopping existing application..."
+        if pm2 list | grep -q "$PM2_APP_NAME"; then
+          pm2 stop "$PM2_APP_NAME"
+          pm2 delete "$PM2_APP_NAME"
+        fi
         
-        echo "Pulling latest changes..."
-        git pull origin main
+        echo "2. Pulling latest changes..."
+        git fetch --all
+        git reset --hard origin/main
         
-        echo "Installing dependencies..."
+        echo "3. Installing dependencies..."
         npm ci --prefer-offline
         
-        echo "Building application..."
+        echo "4. Building application..."
         npm run build
         
-        echo "Starting application..."
+        echo "5. Starting application..."
         pm2 start npm --name "$PM2_APP_NAME" -- start
         
-        echo "Saving PM2 process list..."
+        echo "6. Saving PM2 process list..."
         pm2 save
+        pm2 startup 2>&1 | grep -v "\[PM2\]" || true
         EOF

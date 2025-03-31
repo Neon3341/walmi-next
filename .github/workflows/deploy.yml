@@ -1,4 +1,4 @@
-name: Deploy Walmi App
+name: Deploy Walmi Next.js App
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 env:
   PM2_APP_NAME: walmi-next
-  NODE_VERSION: '22' 
+  GIT_REPO: https://github.com/Neon3341/walmi-next.git
 
 jobs:
   deploy:
@@ -16,6 +16,12 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
 
     - name: Configure SSH
       uses: webfactory/ssh-agent@v0.9.0
@@ -26,33 +32,38 @@ jobs:
       run: |
         ssh -T -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} echo "SSH connection successful"
 
-     
     - name: Deploy application
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
         set -e
         cd ${{ secrets.APP_DIRECTORY }}
         
-        echo "1. Stopping existing application..."
-        if pm2 list | grep -q "$PM2_APP_NAME"; then
-          pm2 stop "$PM2_APP_NAME"
-          pm2 delete "$PM2_APP_NAME"
+        echo "Stopping existing application..."
+        pm2 stop "$PM2_APP_NAME" || true
+        
+        echo "Checking git repository..."
+        if [ ! -d .git ]; then
+          echo "Initializing git repository..."
+          git init
+          git remote add origin $GIT_REPO
+          git fetch
+          git checkout -t origin/main || git checkout main
         fi
         
-        echo "2. Pulling latest changes..."
-        git fetch --all
-        git reset --hard origin/main
+        echo "Pulling latest changes..."
+        git reset --hard
+        git clean -fd
+        git pull origin main
         
-        echo "3. Installing dependencies..."
+        echo "Installing dependencies..."
         npm ci --prefer-offline
         
-        echo "4. Building application..."
+        echo "Building application..."
         npm run build
         
-        echo "5. Starting application..."
+        echo "Starting application..."
         pm2 start npm --name "$PM2_APP_NAME" -- start
         
-        echo "6. Saving PM2 process list..."
+        echo "Saving PM2 process list..."
         pm2 save
-        pm2 startup 2>&1 | grep -v "\[PM2\]" || true
         EOF

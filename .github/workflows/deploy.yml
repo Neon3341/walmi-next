@@ -43,7 +43,10 @@ jobs:
         fi
     
         cd "${{ secrets.APP_DIRECTORY }}"
-    
+
+        source ~/.nvm/nvm.sh
+        nvm use 22
+        
         echo "Stopping existing application..."
         pm2 stop "$PM2_APP_NAME" || true
         

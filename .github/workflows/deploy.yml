@@ -26,30 +26,7 @@ jobs:
       run: |
         ssh -T -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} echo "SSH connection successful"
 
-    - name: Install Node.js and PM2 on server if needed
-      run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-        set -e
-        # Проверяем и устанавливаем Node.js если нужно
-        if ! command -v node &> /dev/null; then
-          echo "Installing Node.js..."
-          curl -fsSL https://deb.nodesource.com/setup_$NODE_VERSION.x | sudo -E bash -
-          sudo apt-get install -y nodejs
-        fi
-        
-        # Проверяем и устанавливаем PM2 если нужно
-        if ! command -v pm2 &> /dev/null; then
-          echo "Installing PM2..."
-          npm install -g pm2
-        fi
-        
-        # Проверяем и устанавливаем git если нужно
-        if ! command -v git &> /dev/null; then
-          echo "Installing Git..."
-          sudo apt-get install -y git
-        fi
-        EOF
-
+     
     - name: Deploy application
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'

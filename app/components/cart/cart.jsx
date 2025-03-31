@@ -68,7 +68,7 @@ function CartLeftSideInner() {
                                     {productsData[child.id] && <Image className="w-full min-w-24 lg:min-w-32" src={productsData[child.id]?.media.thumbnail} alt="thumb" unoptimized width={0} height={200} priority={true} /> || "Еще загружаем..."}
                                 </div>
                                 <div className="lg:col-span-5">
-                                    <h3 className="w-full">{productsData[child.id]?.title || "Еще загружаем..."}</h3>
+                                    <h3 className="w-full">{productsData[child.id]?.title?.ru || "Еще загружаем..."}</h3>
                                     <div className={`${inter.className} ml-1 mt-1 block lg:hidden`}>
                                         <p className="font-bold text-[20px] text-green-600 rounded-2xl w-fit leading-4">{priceSpaces(productsData[child.id]?.price)}  <span className="text-base">₽ </span></p>
                                         {productsData[child.id]?.oldPrice > 0 && <p className="line-through text-[12px]">{priceSpaces(productsData[child.id]?.oldPrice)}  ₽</p>}

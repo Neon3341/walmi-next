@@ -1,17 +1,15 @@
-name: Deploy Walmi Next App
+name: Deploy WalmiNext App
 
 on:
   push:
     branches:
-      - main 
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     
     steps:
-    
-    # Шаг 1: Настроим SSH-ключи и доступ
     - name: Checkout code
       uses: actions/checkout@v2
 
@@ -20,27 +18,32 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    # Шаг 2: Остановка приложения на сервере
+    # Add known hosts first to avoid strict host checking
+    - name: Add server to known hosts
+      run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+
+    # Test SSH connection first
+    - name: Test SSH connection
+      run: ssh ${{ secrets.USER }}@${{ secrets.HOST }} "echo 'SSH connection successful!'"
+
+    # Set environment variable for PM2 app name
+    - name: Set PM2 app name
+      run: echo "PM2_APP_NAME=${{ secrets.PM2_APP_NAME }}" >> $GITHUB_ENV
+
+    # Then proceed with your deployment steps
     - name: Stop application with PM2
-      run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.USER }}@${{ secrets.HOST }} "pm2 stop ${PM2_APP_NAME} || true" 
+      run: ssh ${{ secrets.USER }}@${{ secrets.HOST }} "pm2 stop $PM2_APP_NAME || true"
     
-    # Шаг 3: Получение последних изменений на сервер
-    - name: Pull latest code from Git repository
-      run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.USER }}@${{ secrets.HOST }} "cd ${{ secrets.DIRECTORY_PATH }} && git pull origin main"
+    - name: Pull latest code
+      run: ssh ${{ secrets.USER }}@${{ secrets.HOST }} "cd ${{ secrets.DIRECTORY_PATH }} && git pull origin main"
     
-    # Шаг 4: Установка зависимостей
     - name: Install dependencies
-      run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.USER }}@${{ secrets.HOST }} "cd ${{ secrets.DIRECTORY_PATH }} && npm install"
+      run: ssh ${{ secrets.USER }}@${{ secrets.HOST }} "cd ${{ secrets.DIRECTORY_PATH }} && npm install"
     
-    # Шаг 5: Билд проекта
     - name: Build the project
-      run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.USER }}@${{ secrets.HOST }} "cd ${{ secrets.DIRECTORY_PATH }} && npm run build"
+      run: ssh ${{ secrets.USER }}@${{ secrets.HOST }} "cd ${{ secrets.DIRECTORY_PATH }} && npm run build"
     
-    # Шаг 6: Запуск приложения с PM2
     - name: Start application with PM2
-      run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.USER }}@${{ secrets.HOST }} "cd ${{ secrets.DIRECTORY_PATH }} && pm2 start npm --name ${PM2_APP_NAME} -- start"
+      run: ssh ${{ secrets.USER }}@${{ secrets.HOST }} "cd ${{ secrets.DIRECTORY_PATH }} && pm2 start npm --name $PM2_APP_NAME -- start"

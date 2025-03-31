@@ -1,6 +1,6 @@
 export default class WalmiApi {
-    imageBasePath = "http://localhost:3220/media";
-    basePath = "http://localhost:3220";
+    imageBasePath = "http://localhost:3200/media";
+    basePath = "http://localhost:3200";
 
 
     async get(endpoint, params = "") {

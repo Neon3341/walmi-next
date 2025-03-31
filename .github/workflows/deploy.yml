@@ -36,17 +36,7 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << EOF
         set -e 
-
         
-        NODE_PATH=$(which node)
-        NPM_PATH=$(which npm)
-    
-        # Verify Node/npm are available
-        [ -f "$NODE_PATH" ] || { echo "Node.js not found"; exit 1; }
-        [ -f "$NPM_PATH" ] || { echo "npm not found"; exit 1; }
-
-        
-        # Create app directory if it doesn't exist
         if [ ! -d "${{ secrets.APP_DIRECTORY }}" ]; then
           echo "Creating application directory..."
           mkdir -p "${{ secrets.APP_DIRECTORY }}"

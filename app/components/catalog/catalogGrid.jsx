@@ -1,33 +1,46 @@
 "use client"
-import WalmiApi from "@bin/walmiApi";
-import ProductCard from "@components/product/cards";
-import { useEffect, useState } from "react"
+import ProductGrid from "@components/layouts/productGrid";
+import { useEffect, useState, useRef } from "react"
+import { useSelector } from "react-redux";
 
 export default function CatalogProductGrid({ }) {
     const [products, setProducts] = useState([]);
     const [page, setPage] = useState(0);
-    const [query, setQuery] = useState({});
+    const initialDateCreate = useRef({ $gte: 1, $lt: Date.now() });
+    const [query, setQuery] = useState({ dateCreate: initialDateCreate.current });
 
+    const { search, filters } = useSelector((state) => state.search);
 
     useEffect(() => {
-        getProducts(16, page, query).then((data) => setProducts((prev => [...prev, data])))
-    }, []);
+        // Формируем часть запроса для фильтров
+        const filtersQuery = Object.entries(filters).reduce((acc, [key, value]) => {
+            // Для строковых значений (не пустых)
+            if (typeof value === 'string' && value.trim() !== '') {
+                acc[key] = value;
+            }
+            // Для массивов (не пустых)
+            else if (Array.isArray(value) && value.length > 0) {
+                acc[`specs.${key}`] = { $in: value };
+            }
+            return acc;
+        }, {});
+
+        // Формируем часть запроса для поиска
+        const searchQuery = search ? { $text: { $search: search } } : {};
+
+        // Собираем полный запрос
+        const newQuery = {
+            dateCreate: initialDateCreate.current,
+            ...filtersQuery,
+            ...searchQuery,
+        };
+
+        setQuery(newQuery);
+    }, [filters, search]); // Зависимости: фильтры и поиск
 
     return (
-        <div className={`grid grid-cols-2 lg:grid-cols-4 gap-x-3 gap-y-10 py-5 px-3 lg:px-8`}>
-            {products?.map((child, index) => {
-                return <ProductCard key={index} variant={variant} data={child} />
-            })}
-        </div>
+        <>
+            <ProductGrid quantity={16} cols={4} query={query} />
+        </>
     )
-}
-
-
-
-const getProducts = async (quantity, page, query) => {
-    const api = new WalmiApi;
-    const params = new URLSearchParams({ limit: quantity, skip: quantity * page, query: JSON.stringify(query) }).toString();
-    const result = await api.get("/products/", params);
-    return result.data;
-
 }

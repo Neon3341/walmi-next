@@ -31,7 +31,7 @@ export default function TestRedux({ }) {
         const newQuery = { ...filtersQuery, ...searchQuery };
         setTotal(getProducts(newQuery))
 
-    }, []);
+    }, [search, filters]);
 
 
     return (

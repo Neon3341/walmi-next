@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState, useRef, useCallback } from "react"
+import { useEffect, useState, useRef, useCallback, useMemo } from "react"
 import { useSelector } from "react-redux";
 import WalmiApi from "@bin/walmiApi";
 import ProductGridStatic from "@components/layouts/productGridStatic";
@@ -21,13 +21,12 @@ export default function CatalogProductGrid({ }) {
     const [isLoading, setIsLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
     const [total, setTotal] = useState(0);
-    const initialDateCreate = useRef({ $gte: 1, $lt: Date.now() });
-    const [query, setQuery] = useState({ dateCreate: initialDateCreate.current });
+    const initialDateCreate = useRef({ $gte: 1, $lt: Date.now() }); 
     const triggerRef = useRef();
 
     const { search, filters } = useSelector((state) => state.search);
 
-    useEffect(() => {
+    const query = useMemo(() => {
         const filtersQuery = Object.entries(filters).reduce((acc, [key, value]) => {
             if (typeof value === 'string' && value.trim() !== '') {
                 acc[key] = value;
@@ -38,9 +37,7 @@ export default function CatalogProductGrid({ }) {
         }, {});
 
         const searchQuery = search ? { $text: { $search: search } } : {};
-        const newQuery = { dateCreate: initialDateCreate.current, ...filtersQuery, ...searchQuery };
-
-        setQuery(newQuery);
+        return { dateCreate: initialDateCreate.current, ...filtersQuery, ...searchQuery };
     }, [filters, search]);
 
     useEffect(() => {
@@ -90,7 +87,7 @@ export default function CatalogProductGrid({ }) {
         <div className="relative">
             {!total && !isLoading && <h2 className="mt-12 text-xl font-semibold">К сожалению, ничего не найдено!</h2>}
             {!total && isLoading && <h3 className="mt-12 text-base font-semibold">Загружаем товары!</h3>}
-            <ProductGridStatic products={products} cols={4} />
+            <ProductGridStatic products={products} cols={3} />
             <div ref={triggerRef} className="absolute bottom-64 bg-red-500 w-0" style={{ height: "20px" }} />
             {isLoading && <div>Загрузка...</div>}
             {!hasMore && <div>К сожалению, больше нет товаров отвечающих вашим фильтрам</div>}

@@ -6,8 +6,11 @@ export default function Home() {
   return (
     <main>
       <div className="grid lg:grid-cols-2 grid-cols-1">
-        <HomeSlider />
-        <ProductGrid page={1} />
+        <div className="hidden lg:block">
+          <HomeSlider />
+          <ProductGrid page={1} />
+        </div>
+
         <div className="col-span-2">
 
           <ProductGrid quantity={12} page={2} cols={6} />

@@ -58,7 +58,7 @@ export default function HomeSlider() {
 
     return (
         <div className="relative">
-            <div className="flex flex-col absolute -left-[250px]">
+            <div className="hidden flex-col absolute -left-[250px]">
                 <p>
                     <span className="font-bold">METADATA:</span>
                     <br />

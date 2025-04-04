@@ -33,20 +33,20 @@ function CatalogDDMInner() {
     }
 
     return (
-        <div className={`min-h-[650px] bg-white rounded-ee-2xl border border-sky rounded-es-2xl z-50 w-box-xl fixed top-16 py-5 px-7 gap-x-4 ${catalogDDMState ? "flex" : "hidden"}`}>
+        <div className={`min-h-[650px] bg-white rounded-ee-2xl border border-cappuccino border-t-0 rounded-es-2xl z-50 w-box-xl fixed top-16 py-5 px-7 gap-x-4 ${catalogDDMState ? "flex" : "hidden"}`}>
             <div className=" min-w-64 py-2">
                 {categories.map((child, index) => {
                     return (
-                        <div key={index} onMouseEnter={chooseCat} id={index} className={`py-3 px-8 rounded-xl  cursor-pointer ${chosenCat == index ? "bg-neutral-200" : ""}`}>
+                        <div key={index} onMouseEnter={chooseCat} id={index} className={`py-3 px-8 rounded-xl  cursor-pointer ${chosenCat == index ? "bg-cappuccino" : ""}`}>
                             <h4 className="font-normal">{child.name}</h4>
                         </div>
                     );
                 })}
             </div>
-            <div className="min-w-64 bg-neutral-100 py-2 px-3 rounded-2xl">
+            <div className="min-w-64 bg-amber-900/10 py-2 px-3 rounded-2xl">
                 {categories[chosenCat]?.children.map((child, index) => {
                     return (
-                        <div key={index} onMouseEnter={chooseSubCat} id={index} className={`py-3 px-8 rounded-xl  cursor-pointer ${chosenSubCat == index ? "bg-neutral-200" : ""}`}>
+                        <div key={index} onMouseEnter={chooseSubCat} id={index} className={`py-3 px-8 rounded-xl  cursor-pointer ${chosenSubCat == index ? "bg-cappuccino" : ""}`}>
                             <h4 className="font-normal">{child.name}</h4>
                         </div>
                     );

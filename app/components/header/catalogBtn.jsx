@@ -22,7 +22,7 @@ function Inner() {
     };
 
     return (
-        <Button onClick={onclick} ico={ListIco} variant={"default"} className={"w-fit ml-4 font-semibold"}>
+        <Button onClick={onclick} ico={ListIco} variant={"default"} className={"bg-cappuccino w-fit ml-4 font-semibold"}>
             Каталог
         </Button>
     );

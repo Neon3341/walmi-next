@@ -31,12 +31,12 @@ function Card({ data, config }) {
     const containerRef = useRef(null);
     const { gallery = [] } = data.media;
 
-    const { handleMouseMove, handleMouseLeave, handleTouchMove, handleTouchEnd } = 
-    useImageHover({
-      containerRef,
-      gallery,
-      setCurrentIndex,
-    });
+    const { handleMouseMove, handleMouseLeave, handleTouchMove, handleTouchEnd } =
+        useImageHover({
+            containerRef,
+            gallery,
+            setCurrentIndex,
+        });
 
     return (
         <div className="w-full">
@@ -95,10 +95,18 @@ function ProductImage({ src, visible, lazy = false }) {
 }
 
 function ProductInfo({ data, config }) {
+    const [isHover, setIsHover] = useState(false);
     return (
         <>
             {config.showTitle && (
-                <p className="font-semibold text-lg leading-5 line-clamp-2">{data.title.ru}</p>
+                <div onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)} className="">
+                    <span className="inline font-semibold text-lg leading-5 line-clamp-2">{data.title.ru} | </span>
+                    <span className="inline leading-5 relative">{data.specs.width} x {data.specs.depth} x {data.specs.height}
+
+                        <span className={`${isHover ? "opacity-100" : "opacity-0"} text-[8px] w-fit transition-opacity absolute m-auto right-0 left-0 -bottom-4 `}>(Ш х Г х В)</span>
+                    </span>
+
+                </div>
             )}
             <Price price={data.price} />
         </>
@@ -132,35 +140,35 @@ function Price({ price }) {
 
 const useImageHover = ({ containerRef, gallery, setCurrentIndex }) => {
     const handleMove = (clientX) => {
-      if (!containerRef.current || gallery.length === 0) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      const x = clientX - rect.left;
-      const index = Math.floor((x / rect.width) * gallery.length);
-      setCurrentIndex(Math.min(index, gallery.length - 1));
+        if (!containerRef.current || gallery.length === 0) return;
+        const rect = containerRef.current.getBoundingClientRect();
+        const x = clientX - rect.left;
+        const index = Math.floor((x / rect.width) * gallery.length);
+        setCurrentIndex(Math.min(index, gallery.length - 1));
     };
-  
+
     const handleMouseMove = (e) => {
-      handleMove(e.clientX);
+        handleMove(e.clientX);
     };
-  
+
     const handleTouchMove = (e) => {
-      if (e.touches.length === 0) return;
-      const touch = e.touches[0];
-      handleMove(touch.clientX);
-      e.preventDefault();
+        if (e.touches.length === 0) return;
+        const touch = e.touches[0];
+        handleMove(touch.clientX);
+        e.preventDefault();
     };
-  
+
     const handleMouseLeave = () => setCurrentIndex(-1);
     const handleTouchEnd = () => setCurrentIndex(-1);
-  
-    return { 
-      handleMouseMove, 
-      handleMouseLeave, 
-      handleTouchMove, 
-      handleTouchEnd 
+
+    return {
+        handleMouseMove,
+        handleMouseLeave,
+        handleTouchMove,
+        handleTouchEnd
     };
-  };
-  
+};
+
 
 const priceSpaces = (price) =>
     price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');

@@ -41,7 +41,7 @@ function IconButtonsInner() {
                 <span className="text-xs text-foreground/5 leading-3 mt-2 hidden lg:block">Корзина</span>
                 {
                     cartQ ?
-                        <span className="absolute left-0 top-0 rounded-xl bg-sky hidden lg:flex w-5 h-5 text-center justify-center  items-center">{cartQ}</span>
+                        <span className="absolute left-0 top-0 rounded-xl bg-latte text-white hidden lg:flex w-5 h-5 text-center justify-center  items-center">{cartQ}</span>
                         : ""
                 }
             </Link>

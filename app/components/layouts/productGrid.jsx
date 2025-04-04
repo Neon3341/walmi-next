@@ -31,7 +31,7 @@ export default function ProductGrid({ quantity = 6, page = 0, variant = "small",
     }, [query]);
 
     return (
-        <div className={`w-full grid grid-cols-2  grid-cols-${cols} gap-x-3 gap-y-10 py-5 px-3 lg:px-8`}>
+        <div className={`w-full grid grid-cols-2  lg:grid-cols-${cols} gap-x-3 gap-y-10 py-5 px-3 lg:px-8`}>
             {products?.map((child, index) => (
                 <ProductCard key={index} variant={variant} data={child} />
             ))}

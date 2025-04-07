@@ -36,7 +36,7 @@ export default function CatalogFilters({ }) {
     return (
         <div className="relative z-50">
             <Button onClick={() => setCollapsed(prev => !prev)} variant={"outline"} className={"lg:hidden"}>Фильтры</Button>
-            <div className={`${collapsed ? " opacity-0 scale-y-0" : " opacity-100 scale-y-100"} lg:opacity-100 lg:scale-y-100 origin-top z-50 transition-all duration-200 absolute top-12  lg:relative h-auto rounded-2xl bg-neutral-100 w-full px-3 py-3 flex flex-col gap-y-3`}>
+            <div className={`${collapsed ? " opacity-0 scale-y-0" : " opacity-100 scale-y-100"} lg:opacity-100 lg:scale-y-100 origin-top z-50 transition-all duration-200 absolute top-12  lg:relative h-auto rounded-2xl bg-neutral-50 w-full px-3 py-3 flex flex-col gap-y-3`}>
 
                 <div className="rounded-2xl  border-2 border-cappuccino w-full px-3 py-3" >
                     <h3 className="text-lg font-semibold">Цвет:</h3>

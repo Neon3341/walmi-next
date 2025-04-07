@@ -32,10 +32,10 @@ export default function Header({ }) {
             <div className="max-w-box-xl w-full h-fit justify-between py-2 mt-16 gap-x-4 z-0 hidden sm:flex">
                 <div className="flex gap-x-2">
                     <span className="hover:text-latte cursor-pointer font-semibold px-2 py-1 transition-all">Москва</span> {/* Сделать выбор региона */}
-                    <Link href={"/"} className="px-2 py-1  hover:text-green-600 transition-all">
+                    <Link href={"/split"} className="px-2 py-1  hover:text-green-600 transition-all">
                         <span>Сплит</span>
                     </Link>
-                    <Link href={"/"} className="px-2 py-1 hover:text-latte transition-all">
+                    <Link href={"/custom"} className="px-2 py-1 hover:text-latte transition-all">
                         <span>На заказ</span>
                     </Link>
                     <Link href={"/"} className="px-2 py-1 hover:text-latte transition-all">
@@ -52,11 +52,11 @@ export default function Header({ }) {
                     </Link>
                 </div>
                 <div className="flex gap-x-2">
-                    <Link href={"/"} className="px-2 py-1 hidden xl:block  hover:text-latte transition-all">
+                    <Link href={"/distributor"} className="px-2 py-1 hidden xl:block  hover:text-latte transition-all">
                         <span>Покупайте как юрлицо</span>
                     </Link>
-                    <Link href={"/"} className="pl-2 py-1 hidden lg:block  hover:text-latte transition-all">
-                        <span>Станьте дистрибьютором</span>
+                    <Link href={"/distributor"} className="pl-2 py-1 hidden lg:block  hover:text-latte transition-all">
+                        <span>Станьте партнером</span>
                     </Link>
                 </div>
             </div>

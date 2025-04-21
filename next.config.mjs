@@ -8,6 +8,17 @@ const nextConfig = {
             },
         ],
     },
+    experimental: {
+        appDir: true,
+        turbo: {
+         
+        }
+      },
+      transpilePackages: [],
+      typescript: {
+        
+        ignoreBuildErrors: false,
+      }
 };
 
 export default nextConfig;

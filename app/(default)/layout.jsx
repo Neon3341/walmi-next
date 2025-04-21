@@ -47,7 +47,7 @@ export default function RootLayout({ children }) {
         <div className="w-full max-w-box-xl mx-auto h-[1px] bg-neutral-400 my-10"></div>
         <div className="w-full max-w-box-xl mx-auto flex flex-row justify-between">
           <div>
-            <Image src={WalmiText} width={180} height={90} />
+            <Image alt="text logo" src={WalmiText} width={180} height={90} />
           </div>
           <div>
             <ul className="flex gap-x-3">

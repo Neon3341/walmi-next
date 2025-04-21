@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import WalmiApi from "@bin/walmiApi";
 import Button from "@components/button/variantButton";
 import Input from "../inputs/input";
+import { setCart } from "@storage/localUserSlice";
 
 export default function OrderForm() {
 
@@ -21,7 +22,8 @@ function OrderFormInner() {
     const [formData, setFormData] = useState({ cart: [...cart] });
     const [status, setStatus] = useState({ err: false, notice: false });
     const router = useRouter();
-
+    const dispatch = useDispatch();
+    
     useEffect(() => {
         setFormData((prev) => ({ ...prev, cart: [...cart] }))
     }, [cart]);
@@ -39,14 +41,14 @@ function OrderFormInner() {
         const body = { ...formData }
         console.log(body);
         api.post('/orders/', body).then((response) => {
-            router.push(`/order/${response?.id}/`);
+            dispatch(setCart([]))
             setStatus(({ notice: "Успешно оформлен!", err: false }));
+            router.push(`/order/${response?.id}/`);
         }).catch((err) => {
             console.error(err);
             setStatus((prev) => ({ ...prev, err: "Ошибка на сервере, повторите попытку позже или свяжитесь с нами" }));
         });
     };
-
     const handleChange = (e) => {
         setFormData((prev) => ({ ...prev, [e.target.id]: e.target.value }))
     }

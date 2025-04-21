@@ -82,7 +82,7 @@ export default async function DistributorPage({ }) {
             </div>
             <div className="mt-24">
                 <p className={`text-center text-2xl font-semibold ${inter.className}`}>Позвоните нам:<br />
-                    + 7 (495) 123 - 45 - 67</p>
+                    +7 (919) 411 - 21 - 51</p>
 
             </div>
         </main>

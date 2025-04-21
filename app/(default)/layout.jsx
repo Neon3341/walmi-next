@@ -39,7 +39,7 @@ export default function RootLayout({ children }) {
       <div className="px-8  lg:mt-10  flex flex-col pt-24 lg:pt-0 lg:pb-0 bg-neutral-200">
         <div className={`max-w-box-xl w-full px-4 pt-10 mx-auto ${inter.className}`}>
           <h3 className="text-2xl font-semibold">Доставка по всей России</h3>
-          <p>Чтобы заказать товар в магазине, вы можете оформить заказ на сайте или позвонить нам: +7(495) 123 44 55</p>
+          <p>Чтобы заказать товар в магазине, вы можете оформить заказ на сайте или позвонить нам: +7 (919) 411 - 21 - 51</p>
           <Link href={"/delivery"}>
             <span className="underline">Подробнее</span>
           </Link>

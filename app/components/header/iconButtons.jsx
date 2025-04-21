@@ -54,7 +54,7 @@ function IconButtonsInner() {
                 <Image alt="call" src={TelIco} height={25} width={25} className="min-w-6" />
                 <span className="text-xs text-foreground/5 leading-3 mt-2 hidden lg:block">Позвонить</span>
             </a> */}
-            <a className="flex items-center flex-col hover:text-latte transition-all self-center" href="mailto:sales@walmi.ru">
+            <a className="flex items-center flex-col hover:text-latte transition-all self-center" href="mailto:zakaz@walmi.ru">
                 <Image alt="email" src={AtIco} height={25} width={25} className="min-w-6" />
                 <span className="text-xs text-foreground/5 leading-3 mt-2 hidden lg:block">Написать</span>
             </a>

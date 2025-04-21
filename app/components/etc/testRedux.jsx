@@ -5,12 +5,11 @@ import { useSelector } from "react-redux";
 
 const getProducts = async (query) => {
     const api = new WalmiApi();
-    const params = new URLSearchParams({
+    const result = await api.get("/products/", {
         limit: 1,
         skip: 0,
         query: JSON.stringify(query)
-    }).toString();
-    const result = await api.get("/products/", params);
+    });
     return result.total;
 };
 

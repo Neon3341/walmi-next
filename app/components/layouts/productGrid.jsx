@@ -41,12 +41,10 @@ export default function ProductGrid({ quantity = 6, page = 0, variant = "small",
 
 const getProducts = async (quantity, page, query) => {
     const api = new WalmiApi;
-    const params = new URLSearchParams({ 
+    const result = await api.get("/products/", { 
         limit: quantity, 
         skip: quantity * page, 
         query: JSON.stringify(query) 
-    }).toString();
-    
-    const result = await api.get("/products/", params);
+    });
     return result.data;
 }

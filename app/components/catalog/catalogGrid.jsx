@@ -6,12 +6,11 @@ import ProductGridStatic from "@components/layouts/productGridStatic";
 
 const getProducts = async (quantity, page, query) => {
     const api = new WalmiApi();
-    const params = new URLSearchParams({
+    const result = await api.get("/products/", {
         limit: quantity,
         skip: quantity * page,
         query: JSON.stringify(query)
-    }).toString();
-    const result = await api.get("/products/", params);
+    });
     return result;
 };
 

@@ -42,8 +42,7 @@ export default function HSSlideOne({ }) {
 
 const fetchRelated = async () => {
     const api = new WalmiApi;
-    const params = new URLSearchParams({ limit: 6 }).toString();
-    const result = await api.get("/products/", params);
+    const result = await api.get("/products/", { limit: 6 });
     return result.data;
     const array = {
         title: "Стеллажи",

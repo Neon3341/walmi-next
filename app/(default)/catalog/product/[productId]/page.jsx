@@ -56,7 +56,7 @@ const getProduct = async (productId) => {
 
     const api = new WalmiApi;
     const response = await api.get(`/products/${productId}/`);
-    console.log(response);
+    //console.log(response);
     return response.data;
     return {
         title: "Hoff Loft - Письменный стол",

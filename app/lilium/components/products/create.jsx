@@ -75,7 +75,7 @@ export default function LiliumCreateProduct({ product }) {
             
             try {
                 const response = await api.post('/products/', product, token);
-                console.log(`Товар создан: ${JSON.stringify(spec)}`, response);
+              //  console.log(`Товар создан: ${JSON.stringify(spec)}`, response);
             } catch (error) {
                 console.error(`Ошибка при создании товара: ${JSON.stringify(spec)}`, error);
             }
@@ -83,7 +83,7 @@ export default function LiliumCreateProduct({ product }) {
             await new Promise(resolve => setTimeout(resolve, 50));
         }
         
-        console.log(`Всего создано товаров: ${allSpecsCombinations.length}`);
+        //console.log(`Всего создано товаров: ${allSpecsCombinations.length}`);
     };
     
 

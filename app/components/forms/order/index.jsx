@@ -39,7 +39,7 @@ function OrderFormInner() {
 
         const api = new WalmiApi;
         const body = { ...formData }
-        console.log(body);
+        //console.log(body);
         api.post('/orders/', body).then((response) => {
             dispatch(setCart([]))
             setStatus(({ notice: "Успешно оформлен!", err: false }));

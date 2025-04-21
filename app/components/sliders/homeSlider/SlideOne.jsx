@@ -15,9 +15,9 @@ export default function HSSlideOne({ }) {
         fetchRelated().then((data) => setRelated(data));
     }, []);
 
-    useEffect(() => {
-        console.log(related);
-    }, [related]);
+    // useEffect(() => {
+    //     console.log(related);
+    // }, [related]);
 
     return (
         <div className="w-full bg-cappuccino rounded-xl h-fit lg:h-full flex flex-col py-5 lg:px-8 px-3 relative">

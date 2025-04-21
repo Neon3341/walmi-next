@@ -1,23 +1,33 @@
-"use client"
+"use client";
 
 import Router from "next/router";
 import React, { useCallback, useEffect } from "react";
 import ym, { YMInitializer } from "react-yandex-metrika";
 
-const YM_COUNTER_ID = 99602394;
+const YM_COUNTER_ID = 101255897;
 
-const Metrika = ({ enabled }) => {
-  const hit = useCallback((url) => {
+interface MetrikaProps {
+  enabled: boolean;
+}
+
+export default function Metrika({ enabled }: MetrikaProps)  {
+  const hit = useCallback((url: string) => {
     if (enabled) {
       ym("hit", url);
     } else {
-      console.log(`%c[YandexMetrika](HIT)`, `color: orange`, url);
+      console.log(`%c[YM](HIT)`, `color: orange`, url);
     }
   }, [enabled]);
 
   useEffect(() => {
+    const handleRouteChange = (url: string) => hit(url);
+
     hit(window.location.pathname + window.location.search);
-    Router.events.on("routeChangeComplete", (url) => hit(url));
+    Router.events.on("routeChangeComplete", handleRouteChange);
+
+    return () => {
+      Router.events.off("routeChangeComplete", handleRouteChange);
+    };
   }, [hit]);
 
   if (!enabled) return null;
@@ -36,5 +46,3 @@ const Metrika = ({ enabled }) => {
     />
   );
 };
-
-export default Metrika;

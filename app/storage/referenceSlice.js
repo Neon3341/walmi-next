@@ -11,11 +11,11 @@ const referenceSlice = createSlice({
     reducers: {
         setCategories(state, action) {
             state.categories = action.payload;
-            console.log(action.payload);
+            //console.log(action.payload);
         },
         setSpecs(state, action) {
             state.specs = action.payload;
-            console.log(action.payload);
+            //console.log(action.payload);
         },
     },
 });

@@ -1,6 +1,6 @@
 export default class WalmiApi {
-    imageBasePath = "https://next.walmi.ru/media";
-    basePath = "https://next.walmi.ru/api";
+    imageBasePath = "https://walmi.ru/media";
+    basePath = "https://walmi.ru/api";
 
 
     async get(endpoint, params = "") {

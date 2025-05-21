@@ -20,9 +20,9 @@ export default function RootLayout({ children }) {
     <html lang="ru">
       <Metrika className="absolute bottom-[100rem]" enabled={analyticsEnabled} />
       <body
-        className={`antialiased  `}
+        className={`antialiased `}
       >
-        <div className="w-full h-[100vh] flex justify-center content-center z-50 absolute bg-neutral-500/70 backdrop-blur-lg">
+        <div className="w-full h-[100vh] flex justify-center content-center z-50 fixed top-0 left-0 bg-neutral-500/70 backdrop-blur-lg">
           <div className="flex-row justify-center content-center">
             <div className="bg-neutral-200 w-[420px] h-auto p-7 rounded-2xl ">
               <Link href={"/"} className="flex flex-row items-center w-36 lg:w-48">
